@@ -4,26 +4,44 @@ import {Group} from "../../core/objects/misc/Group.js";
 
 /**
  * Component is the base object for all GUI elements.
- * 
+ *
  * All GUI elements are based on the Component class, components can be inserted into other componens or into DOM elements.
- * 
+ *
  * @class Component
  * @param {Component} parent Parent element.
  * @param {string} type Type of the based DOM element.
  */
 function Component(parent, type)
 {
-	/** 
+	/**
 	 * Base DOM element for this component.
 	 *
 	 * Different components may use diferent base element types.
-	 * 
+	 *
 	 * @attribute element
 	 * @type {Component}
 	 */
-	this.element = document.createElement(type !== undefined ? type : "div");
-	this.element.style.position = "absolute";
-	this.element.style.overflow = "hidden";
+	if (type === "video")
+	{
+		this.element = document.createElement("video");
+		this.element.autoplay = false;
+		this.element.id = "myVideo";
+		this.element.width = "320";
+	}
+	else if (type === "slider")
+	{
+		this.element = document.createElement("div");
+		this.element.id = "slider";
+		this.element.className = "slider";
+		this.element.className = "thumb";
+	}
+	else
+	{
+		this.element = document.createElement(type !== undefined ? type : "div");
+		this.element.style.position = "absolute";
+		this.element.style.overflow = "hidden";
+	}
+
 
 	/**
 	 * Event manager responsible for handling all events attached to this component.
@@ -37,11 +55,11 @@ function Component(parent, type)
 	 */
 	this.event = new EventManager();
 
-	/** 
+	/**
 	 * The parent element that contains this Component.
 	 *
 	 * Can be a DOM element or another Component.
-	 * 
+	 *
 	 * @attribute parent
 	 * @type {Component}
 	 */
@@ -50,15 +68,15 @@ function Component(parent, type)
 	{
 		this.attachTo(parent);
 	}
-	
-	/** 
+
+	/**
 	 * True if the element is visible.
 	 *
 	 * @attribute visible
 	 * @type {boolean}
 	 */
 	this.visible = true;
-	
+
 	/**
 	 * Size of this component in px.
 	 *
@@ -66,7 +84,7 @@ function Component(parent, type)
 	 * @type {Vector2}
 	 */
 	this.size = new Vector2(0, 0);
-	
+
 	/**
 	 * Position of this component relatively to its parent in px.
 	 *
@@ -142,7 +160,7 @@ Component.prototype.addEvent = function(event, callback)
 };
 
 /**
- * Remove all ocurrences of a event from the component. 
+ * Remove all ocurrences of a event from the component.
  *
  * @method removeEvent
  * @param {string} event Event name.
@@ -165,9 +183,9 @@ Component.prototype.replaceEvent = function(event, callback)
 	this.event.addAndCreate(this.element, event, callback);
 };
 
-/** 
+/**
  * Add a CSS class to the base DOM element of this Component.
- * 
+ *
  * @method addClass
  * @param {string} name Name of the class to be added.
  */
@@ -176,9 +194,9 @@ Component.prototype.addClass = function(name)
 	this.element.classList.add(name);
 };
 
-/** 
+/**
  * Remove a CSS class from the base DOM element of this Component.
- * 
+ *
  * @method removeClass
  * @param {string} name Name of the class to be removed.
  */
@@ -227,7 +245,7 @@ Component.prototype.setStyles = function(styles)
 /**
  * Add and drag and drop default event prevention to this component.
  *
- * Usefull to avoid unwanted actions on draggable components. 
+ * Usefull to avoid unwanted actions on draggable components.
  *
  * @method preventDragEvents
  */
@@ -265,7 +283,7 @@ Component.prototype.setAltText = function(altText)
 	// Destroy
 	var destroyFunction = this.destroy;
 	this.destroy = function()
-	{	
+	{
 		destroyFunction.call(this);
 
 		if (document.body.contains(element))
@@ -273,8 +291,8 @@ Component.prototype.setAltText = function(altText)
 			document.body.removeChild(element);
 		}
 	};
-	
-	this.element.style.pointerEvents = "auto"; 
+
+	this.element.style.pointerEvents = "auto";
 
 	this.addEvent("mousemove", function(event)
 	{
@@ -295,7 +313,7 @@ Component.prototype.setAltText = function(altText)
  * Set method to be called on component click.
  *
  * A "click" event is added to the component event manager. Multiple click events can coexist.
- * 
+ *
  * @method setOnClick
  * @param {Function} callback Function called when the component is clicked.
  */
@@ -306,7 +324,7 @@ Component.prototype.setOnClick = function(callback)
 
 /**
  * Remove all DOM children from the element.
- * 
+ *
  * @method removeAllChildren
  */
 Component.prototype.removeAllChildren = function()
@@ -319,9 +337,9 @@ Component.prototype.removeAllChildren = function()
 
 /**
  * Attach this component to a new parent component.
- * 
+ *
  * Destroys the object and reataches the base DOM element to the new parent element.
- * 
+ *
  * @method attachTo
  * @param {Component} parent Parent container.
  */
@@ -352,9 +370,9 @@ Component.prototype.attachTo = function(parent)
 
 /**
  * Create event listeners to watch for pointer enter/leave events.
- * 
+ *
  * Store the pointer state in the pointerInside attribute.
- * 
+ *
  * @method watchPointer
  */
 Component.prototype.watchPointer = function()
@@ -378,7 +396,7 @@ Component.prototype.watchPointer = function()
  * Called to destroy a component.
  *
  * Destroy the element and removes it from its DOM parent.
- * 
+ *
  * @method destroy
  */
 Component.prototype.destroy = function()
@@ -407,7 +425,7 @@ Component.prototype.destroy = function()
 
 /**
  * Set positioning mode.
- * 
+ *
  * @method setMode
  * @param {number} setMode
  */
@@ -424,7 +442,7 @@ Component.prototype.setMode = function(mode)
  * Calculate the position of the container to make it centered.
  *
  * Calculated relatively to its parent size.
- * 
+ *
  * @method center
  */
 Component.prototype.center = function()
@@ -455,7 +473,7 @@ Component.prototype.updateVisibility = function()
 
 /**
  * Update the position of this element.
- * 
+ *
  * @method updatePosition
  */
 Component.prototype.updatePosition = function(mode)
@@ -486,7 +504,7 @@ Component.prototype.updatePosition = function(mode)
 
 /**
  * Update the size of this element.
- * 
+ *
  * @method updateSize
  */
 Component.prototype.updateSize = function()
@@ -497,11 +515,11 @@ Component.prototype.updateSize = function()
 
 /**
  * Update component appearance.
- * 
+ *
  * Should be called after changing size or position.
  *
  * Uses the updateVisibility and if the element is visible calls the updateSize and updatePosition (in this order) methods to update the interface.
- * 
+ *
  * @method update
  */
 Component.prototype.updateInterface = function()

@@ -317,17 +317,19 @@ Editor.initialize = function()
 Editor.runProject = function()
 {
 	var tab = Editor.gui.tab.getTab(RunProject, Editor.program);
-
+	var vd = document.getElementById("myVideo");
 	if (tab === null)
 	{
 		tab = Editor.gui.tab.addTab(RunProject, true);
 		tab.select();
 		Editor.gui.menuBar.run.setText(Locale.stop);
+		vd.play();
 	}
 	else
 	{
 		tab.close();
 		Editor.gui.menuBar.run.setText(Locale.run);
+		vd.pause();
 	}
 };
 
@@ -929,7 +931,7 @@ Editor.addDefaultScene = function(material)
 
 	// Box
 	var model = new Mesh(Editor.defaultGeometry, material);
-	model.name = "box";
+	model.name = "box sahne";
 	scene.add(model);
 
 	// Floor

@@ -46,7 +46,7 @@ function MainMenu(parent)
 	this.size.set(0, 25);
 
 	this.preventDragEvents();
-
+	/*
 	// Editor Logo
 	var logo = document.createElement("img");
 	logo.style.display = "block";
@@ -58,7 +58,7 @@ function MainMenu(parent)
 	logo.style.right = "3px";
 	logo.src = Global.FILE_PATH + "logo.png";
 	this.element.appendChild(logo);
-
+*/
 	// File
 	var fileMenu = new DropdownMenu(this);
 	fileMenu.setText(Locale.file);
@@ -225,7 +225,7 @@ function MainMenu(parent)
 					}
 				}, "", Editor.program.name);
 			}, Global.FILE_PATH + "icons/platform/linux.png");
-	
+
 
 			// Publish macos
 			publish.addOption("macOS", function()
@@ -276,7 +276,7 @@ function MainMenu(parent)
 			{
 				var file = files[0];
 				var binary = FileSystem.getFileExtension(file.name) !== "isp";
-				
+
 				var loader = new ObjectLoader();
 				var reader = new FileReader();
 
@@ -321,7 +321,7 @@ function MainMenu(parent)
 
 	// Export OBJ
 	exportMenu.addOption("OBJ", function()
-	{	
+	{
 		Exporters.exportOBJ(Editor.getScene());
 	}, Global.FILE_PATH + "icons/misc/scene.png");
 
@@ -333,7 +333,7 @@ function MainMenu(parent)
 
 	// Export GLB
 	exportMenu.addOption("GLB", function()
-	{	
+	{
 		Exporters.exportGLTF(Editor.getScene(), true);
 	}, Global.FILE_PATH + "icons/gltf.png");
 
@@ -381,7 +381,7 @@ function MainMenu(parent)
 
 	// Export Binary STL
 	exportMenu.addOption("STL (" + Locale.binary + ")", function()
-	{	
+	{
 		Exporters.exportSTL(Editor.program, true);
 	}, Global.FILE_PATH + "icons/misc/scene.png");
 
@@ -418,7 +418,7 @@ function MainMenu(parent)
 	{
 		Editor.copyObject();
 	}, Global.FILE_PATH + "icons/misc/copy.png");
-	
+
 	editMenu.addOption(Locale.cut, function()
 	{
 		Editor.cutObject();
@@ -456,7 +456,7 @@ function MainMenu(parent)
 		{
 			geometry = geometry.clone();
 		}
-		
+
 		geometry.applyMatrix4(object.matrixWorld);
 
 		return new BSP(geometry);
@@ -658,7 +658,7 @@ function MainMenu(parent)
 		var geometry = new Geometry();
 
 		for (var i = 0; i < Editor.selection.length; i++)
-		{	
+		{
 			var obj = Editor.selection[i];
 			if (obj.geometry !== undefined)
 			{
@@ -743,6 +743,7 @@ function MainMenu(parent)
 	this.run.setOnClick(function()
 	{
 		Editor.runProject();
+
 	});
 }
 

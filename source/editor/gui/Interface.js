@@ -6,6 +6,7 @@ import {TabGroup} from "../components/tabs/TabGroup.js";
 import {TabGroupSplit} from "../components/tabs/splittable/TabGroupSplit.js";
 import {TabContainer} from "../components/tabs/splittable/TabContainer.js";
 import {DocumentBody} from "../components/DocumentBody.js";
+import {Slider} from "../components/input/Slider";
 import {TreeView} from "./tab/tree-view/TreeView.js";
 import {ProfilingTab} from "./tab/profiling/ProfilingTab.js";
 import {InspectorContainer} from "./tab/inspector/InspectorContainer.js";
@@ -13,7 +14,8 @@ import {ConsoleTab} from "./tab/console/ConsoleTab.js";
 import {AssetExplorer} from "./tab/asset/AssetExplorer.js";
 import {AnimationTab} from "./tab/animation/AnimationTab.js";
 import {MainMenu} from "./MainMenu.js";
-
+import {VideoContainer} from "./tab/inspector/VideoContainer";
+import {ControlContainer} from "./tab/inspector/ControlContainer";
 /**
  * The full GUI of the application.
  *
@@ -25,7 +27,7 @@ function Interface()
 {
 	/**
 	 * Main tab container that has all the interface tabs.
-	 * 
+	 *
 	 * @attribute tab
 	 * @type {TabContainer}
 	 */
@@ -43,21 +45,22 @@ function Interface()
 	var rightTop = right.elementA;
 	var rightBottom = right.elementB;
 
-	this.assetExplorer = leftBottom.addTab(AssetExplorer, false);
+	this.assetExplorer = leftBottom.addTab(AssetExplorer, true);
+	this.assetExplorer = leftBottom.addTab(ControlContainer, false);
 
-	this.console = leftBottom.addTab(ConsoleTab, false);
+	// this.console = leftBottom.addTab(ConsoleTab, false);
 
-	this.animation = leftBottom.addTab(AnimationTab, false);
+	// this.animation = leftBottom.addTab(AnimationTab, false);
 
 	if (DEVELOPMENT)
 	{
-		leftBottom.addTab(ProfilingTab, false);
+		// leftBottom.addTab(ProfilingTab, false);
 	}
 
 	this.tree = rightTop.addTab(TreeView, false);
 
-	this.inspector = rightBottom.addTab(InspectorContainer, false);
-
+	this.inspector = rightTop.addTab(InspectorContainer, false);
+	this.vd = rightBottom.addTab(VideoContainer, false);
 	this.menuBar = new MainMenu(DocumentBody);
 }
 
@@ -86,7 +89,7 @@ Interface.prototype.saveProgram = function()
 	}
 };
 
-/** 
+/**
  * Load new project from file.
  *
  * Creates the necessary GUI elements to select the file.

@@ -1,5 +1,6 @@
 import {Math} from "three";
 import {Component} from "../Component.js";
+import {Slider} from "../input/Slider";
 import {TabGroup} from "./TabGroup.js";
 import {TabButton} from "./TabButton.js";
 import {TabContainer} from "./splittable/TabContainer.js";
@@ -20,11 +21,22 @@ import {TabContainer} from "./splittable/TabContainer.js";
  */
 function TabComponent(parent, closeable, container, index, title, icon)
 {
-	Component.call(this, parent, "div");
+	if (title === "Video")
+	{
+		Component.call(this, parent, "video");
+	}
+	else if (title === "slider")
+	{
+		Slider.call(parent);
+	}
+	else
+	{
+		Component.call(this, parent, "div");
+		this.element.style.overflow = "visible";
+		this.element.style.backgroundColor = "var(--panel-color)";
+	}
 
 
-	this.element.style.overflow = "visible";
-	this.element.style.backgroundColor = "var(--panel-color)";
 	this.preventDragEvents();
 
 	/**
@@ -77,9 +89,9 @@ TabComponent.prototype = Object.create(Component.prototype);
 
 /**
  * Update tab metadata (name, icon, ...)
- * 
+ *
  * Called after applying changes to object.
- * 
+ *
  * Called for every tab.
  *
  * @method updateMetadata
@@ -88,9 +100,9 @@ TabComponent.prototype.updateMetadata = function() {};
 
 /**
  * Update tab settings.
- * 
+ *
  * Called after settings of the editor are changed.
- * 
+ *
  * Called for every tab.
  *
  * @method updateSettings
@@ -99,9 +111,9 @@ TabComponent.prototype.updateSettings = function() {};
 
 /**
  * Update tab values of the gui for the object attached.
- * 
+ *
  * Called when properties of objects are changed.
- * 
+ *
  * Called only for active tabs.
  *
  * @method updateValues
@@ -110,9 +122,9 @@ TabComponent.prototype.updateValues = function() {};
 
 /**
  * Update tab object view.
- * 
+ *
  * Called when objects are added, removed, etc.
- * 
+ *
  * Called only for active tabs.
  *
  * @method updateObjectsView
@@ -121,9 +133,9 @@ TabComponent.prototype.updateObjectsView = function() {};
 
 /**
  * Update tab after object selection changed.
- * 
+ *
  * Called after a new object was selected.
- * 
+ *
  * Called only for active tabs.
  *
  * @method updateSelection
@@ -132,7 +144,7 @@ TabComponent.prototype.updateSelection = function() {};
 
 /**
  * Activate tab.
- * 
+ *
  * Called when a tab becomes active (visible).
  *
  * @method activate
@@ -143,7 +155,7 @@ TabComponent.prototype.activate = function()
 	{
 		this.deactivate();
 	}
-	
+
 	// TODO <IF TAB NEEDS UPDATE IT SHOULD TAKE CARE OF IT>
 	if (this.update !== undefined)
 	{
@@ -167,7 +179,7 @@ TabComponent.prototype.activate = function()
 
 /**
  * Deactivate tab.
- * 
+ *
  * Called when a tab is deactivated or closed.
  *
  * @method deactivate
@@ -189,7 +201,7 @@ TabComponent.prototype.attach = function() {};
 
 /**
  * Check if an object or resource is attached to the tab.
- * 
+ *
  * Called to check if a tab needs to be closed after changes to objects.
  *
  * @method isAttached
@@ -201,7 +213,7 @@ TabComponent.prototype.isAttached = function()
 
 /**
  * Close the tab element and remove is from the container.
- * 
+ *
  * @method close
  */
 TabComponent.prototype.close = function()
@@ -211,7 +223,7 @@ TabComponent.prototype.close = function()
 
 /**
  * Select this tab.
- * 
+ *
  * @method select
  */
 TabComponent.prototype.select = function()
@@ -261,7 +273,7 @@ TabComponent.prototype.setName = function(text)
 TabComponent.prototype.destroy = function()
 {
 	Component.prototype.destroy.call(this);
-	
+
 	if (this.button !== null)
 	{
 		this.button.destroy();
